@@ -26,12 +26,14 @@ class GetStartedScreen extends StatelessWidget {
                     'Invoice\nMarker',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 48,
+                      fontSize: 50,
                       fontWeight: FontWeight.bold,
-                      height: 1.0,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 0,
+                      height: 1,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 4),
                   const Text(
                     'Create Proffesional Invoices in Second .\nGet and Started with Your Free Trial',
                     style: TextStyle(
@@ -40,7 +42,7 @@ class GetStartedScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 88),
                   SizedBox(
                     width: double.infinity,
                     height: 64,
