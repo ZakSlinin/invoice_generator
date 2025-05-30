@@ -11,6 +11,22 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [ControlInvoiceScreen]
+class ControlInvoiceRoute extends PageRouteInfo<void> {
+  const ControlInvoiceRoute({List<PageRouteInfo>? children})
+    : super(ControlInvoiceRoute.name, initialChildren: children);
+
+  static const String name = 'ControlInvoiceRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ControlInvoiceScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [GetStartedScreen]
 class GetStartedRoute extends PageRouteInfo<void> {
   const GetStartedRoute({List<PageRouteInfo>? children})

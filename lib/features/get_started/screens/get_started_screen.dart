@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:invoice_generator/core/router/app_router.dart';
-import 'package:invoice_generator/features/welcome_to_receipts/screens/welcome_to_receipts.dart';
 
 @RoutePage()
 class GetStartedScreen extends StatelessWidget {

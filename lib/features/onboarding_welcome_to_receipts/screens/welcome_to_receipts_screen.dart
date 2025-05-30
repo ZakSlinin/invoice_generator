@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:invoice_generator/core/router/app_router.dart';
 
 @RoutePage()
 class WelcomeToReceiptsScreen extends StatelessWidget {
@@ -9,6 +10,8 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -35,7 +38,7 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Container(
-                height: 420,
+                height: 450,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
                 ),
@@ -45,7 +48,7 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.asset(
-                          'assets/images/welcome_to_receipts_bg.png',
+                          'assets/images/onboarding_bg.png',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -56,44 +59,33 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                         child: Image.asset(
                           'assets/images/phone.png',
                           fit: BoxFit.contain,
-                          width: 320,
+                          width: 400,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
-              const Text(
+              const SizedBox(height: 32),
+              Text(
                 'Welcome to Receipts',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
+                style: textTheme.bodyLarge,
               ),
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 'Create professional invoices in seconds.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
+                style: textTheme.bodyMedium,
               ),
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 'Perfect for freelancers, small businesses, and anyone who values their time.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black87,
-                ),
+                style: textTheme.bodySmall,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
+              Spacer(),
               SizedBox(
                 width: double.infinity,
                 height: 56,
@@ -106,7 +98,7 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                     elevation: 0,
                   ),
                   onPressed: () {
-                    // context.router.push(const WelcomeToReceiptsRoute());
+                    context.router.push(const ControlInvoiceRoute());
                   },
                   child: const Text(
                     'show More',
