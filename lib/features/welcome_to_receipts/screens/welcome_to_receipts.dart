@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 
 @RoutePage()
 class WelcomeToReceiptsScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.fromLTRB(24, 6, 24, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -32,25 +33,37 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Container(
-                height: 320,
+                height: 420,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3ED36A),
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Image.asset(
-                      'assets/svg/phone.svg',
-                      fit: BoxFit.contain,
-                      height: 220,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          'assets/images/welcome_to_receipts_bg.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Image.asset(
+                          'assets/images/phone.png',
+                          fit: BoxFit.contain,
+                          width: 320,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
               const Text(
                 'Welcome to Receipts',
                 textAlign: TextAlign.center,
@@ -60,7 +73,7 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               const Text(
                 'Create professional invoices in seconds.',
                 textAlign: TextAlign.center,
@@ -80,7 +93,7 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                   color: Colors.black87,
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 10),
               SizedBox(
                 width: double.infinity,
                 height: 56,
@@ -92,7 +105,9 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    // context.router.push(const WelcomeToReceiptsRoute());
+                  },
                   child: const Text(
                     'show More',
                     style: TextStyle(
