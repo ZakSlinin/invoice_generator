@@ -24,14 +24,7 @@ class ControlInvoiceScreen extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: const Text(
-                      'Skip',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: Text('Skip', style: textTheme.labelSmall),
                   ),
                 ],
               ),
@@ -96,7 +89,9 @@ class ControlInvoiceScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.push(const SimpleRoute());
+                  },
                   child: const Text(
                     'show More',
                     style: TextStyle(

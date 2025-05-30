@@ -1,12 +1,10 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:invoice_generator/core/router/app_router.dart';
 
 @RoutePage()
-class WelcomeToReceiptsScreen extends StatelessWidget {
-  const WelcomeToReceiptsScreen({super.key});
+class SimpleScreen extends StatelessWidget {
+  const SimpleScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +23,13 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: Text(
+                    child: const Text(
                       'Skip',
-                      style: textTheme.labelSmall,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ],
@@ -53,34 +55,34 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(24),
                         child: Image.asset(
-                          'assets/images/phone.png',
+                          'assets/images/simple.png',
                           fit: BoxFit.contain,
-                          width: 400,
+                          width: 320,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
               Text(
-                'Welcome to Receipts',
+                'Simple and intuitive',
                 textAlign: TextAlign.center,
                 style: textTheme.bodyLarge,
               ),
               const SizedBox(height: 8),
               Text(
-                'Create professional invoices in seconds.',
+                'User-friendly interface with flexible settings.',
                 textAlign: TextAlign.center,
                 style: textTheme.bodyMedium,
               ),
               const SizedBox(height: 8),
               Text(
-                'Perfect for freelancers, small businesses, and anyone who values their time.',
+                'Work easily — anywhere, anytime.',
                 textAlign: TextAlign.center,
                 style: textTheme.bodySmall,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 18),
               Spacer(),
               SizedBox(
                 width: double.infinity,
@@ -93,9 +95,7 @@ class WelcomeToReceiptsScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-                  onPressed: () {
-                    context.router.push(const ControlInvoiceRoute());
-                  },
+                  onPressed: () {},
                   child: const Text(
                     'show More',
                     style: TextStyle(

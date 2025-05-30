@@ -43,6 +43,22 @@ class GetStartedRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SimpleScreen]
+class SimpleRoute extends PageRouteInfo<void> {
+  const SimpleRoute({List<PageRouteInfo>? children})
+    : super(SimpleRoute.name, initialChildren: children);
+
+  static const String name = 'SimpleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SimpleScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [WelcomeToReceiptsScreen]
 class WelcomeToReceiptsRoute extends PageRouteInfo<void> {
   const WelcomeToReceiptsRoute({List<PageRouteInfo>? children})

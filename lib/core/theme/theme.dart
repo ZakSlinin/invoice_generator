@@ -33,6 +33,6 @@ final lightTheme = ThemeData(
     ),
     labelLarge: TextStyle(fontFamily: 'Poppins'),
     labelMedium: TextStyle(fontFamily: 'Poppins'),
-    labelSmall: TextStyle(fontFamily: 'Poppins'),
+    labelSmall: TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.bold),
   ),
 );
