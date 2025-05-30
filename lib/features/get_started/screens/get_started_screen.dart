@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:invoice_generator/core/router/app_router.dart';
+import 'package:invoice_generator/features/welcome_to_receipts/screens/welcome_to_receipts.dart';
 
 @RoutePage()
 class GetStartedScreen extends StatelessWidget {
@@ -30,16 +32,19 @@ class GetStartedScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Poppins',
                       letterSpacing: 0,
-                      height: 1,
+                      height: 1.1,
                     ),
                   ),
                   const SizedBox(height: 4),
                   const Text(
                     'Create Proffesional Invoices in Second .\nGet and Started with Your Free Trial',
+                    maxLines: 2,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w400,
+                      fontFamily: 'Poppins',
+                      height: 1.6,
                     ),
                   ),
                   const SizedBox(height: 88),
@@ -54,7 +59,9 @@ class GetStartedScreen extends StatelessWidget {
                         ),
                         elevation: 0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        context.router.push(const WelcomeToReceiptsRoute());
+                      },
                       child: const Text(
                         'Get Started',
                         style: TextStyle(
