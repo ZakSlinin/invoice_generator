@@ -1,7 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'abstract_your_items_repository.dart';
 
-class YourItemsLocalData {
-  Future<void> yourItemsLocalData({
+class YourItemsRepositoryImpl implements YourItemsRepository {
+  @override
+  Future<void> saveYourItemsData({
     String? email,
     String? phone,
     required String address,
@@ -19,6 +21,7 @@ class YourItemsLocalData {
     await prefs.setString('address', address);
   }
 
+  @override
   Future<Map<String, String?>> getYourItemsData() async {
     final prefs = await SharedPreferences.getInstance();
     return {
