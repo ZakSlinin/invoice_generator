@@ -15,6 +15,7 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -29,6 +30,39 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
     _addressController.dispose();
     super.dispose();
     print('YourItemsScreen: dispose');
+  }
+
+  bool _validateFields() {
+    if (_addressController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Please enter address',
+          ),
+        ),
+      );
+      return false;
+    }
+
+    final email = _emailController.text;
+    if (email.isNotEmpty) {
+      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+      if (!emailRegex.hasMatch(email)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Please enter a valid email',
+            ),
+          ),
+        );
+        return false;
+      }
+    }
+
+    setState(() {
+      _errorMessage = null;
+    });
+    return true;
   }
 
   @override
@@ -49,19 +83,7 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Skip',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 32),
                         Text(
                           'Tell Us About\nYour Business',
                           textAlign: TextAlign.center,
@@ -76,6 +98,17 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
+                        if (_errorMessage != null) ...[
+                          const SizedBox(height: 16),
+                          Text(
+                            _errorMessage!,
+                            textAlign: TextAlign.center,
+                            style: textTheme.bodySmall?.copyWith(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: 24),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -126,13 +159,15 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
                           elevation: 0,
                         ),
                         onPressed: () {
-                          context.read<YourItemsBloc>().add(
-                            YourItemsSaveEvent(
-                              email: _emailController.text,
-                              phone: _phoneController.text,
-                              address: _addressController.text,
-                            ),
-                          );
+                          if (_validateFields()) {
+                            context.read<YourItemsBloc>().add(
+                              YourItemsSaveEvent(
+                                email: _emailController.text.trim(),
+                                phone: _phoneController.text.trim(),
+                                address: _addressController.text.trim(),
+                              ),
+                            );
+                          }
                         },
                         child: const Text(
                           'Continue',
