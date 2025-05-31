@@ -1,4 +1,3 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -10,66 +9,111 @@
 
 part of 'app_router.dart';
 
+abstract class _$AppRouter extends RootStackRouter {
+  // ignore: unused_element
+  _$AppRouter({super.navigatorKey});
+
+  @override
+  final Map<String, PageFactory> pagesMap = {
+    ControlInvoiceRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ControlInvoiceScreen(),
+      );
+    },
+    GetStartedRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const GetStartedScreen(),
+      );
+    },
+    SimpleRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SimpleScreen(),
+      );
+    },
+    WelcomeToReceiptsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WelcomeToReceiptsScreen(),
+      );
+    },
+    YourItemsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const YourItemsScreen(),
+      );
+    },
+  };
+}
+
 /// generated route for
 /// [ControlInvoiceScreen]
 class ControlInvoiceRoute extends PageRouteInfo<void> {
   const ControlInvoiceRoute({List<PageRouteInfo>? children})
-    : super(ControlInvoiceRoute.name, initialChildren: children);
+      : super(
+          ControlInvoiceRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'ControlInvoiceRoute';
 
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const ControlInvoiceScreen();
-    },
-  );
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
 /// [GetStartedScreen]
 class GetStartedRoute extends PageRouteInfo<void> {
   const GetStartedRoute({List<PageRouteInfo>? children})
-    : super(GetStartedRoute.name, initialChildren: children);
+      : super(
+          GetStartedRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'GetStartedRoute';
 
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const GetStartedScreen();
-    },
-  );
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
 /// [SimpleScreen]
 class SimpleRoute extends PageRouteInfo<void> {
   const SimpleRoute({List<PageRouteInfo>? children})
-    : super(SimpleRoute.name, initialChildren: children);
+      : super(
+          SimpleRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'SimpleRoute';
 
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const SimpleScreen();
-    },
-  );
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
 /// [WelcomeToReceiptsScreen]
 class WelcomeToReceiptsRoute extends PageRouteInfo<void> {
   const WelcomeToReceiptsRoute({List<PageRouteInfo>? children})
-    : super(WelcomeToReceiptsRoute.name, initialChildren: children);
+      : super(
+          WelcomeToReceiptsRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'WelcomeToReceiptsRoute';
 
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const WelcomeToReceiptsScreen();
-    },
-  );
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [YourItemsScreen]
+class YourItemsRoute extends PageRouteInfo<void> {
+  const YourItemsRoute({List<PageRouteInfo>? children})
+      : super(
+          YourItemsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'YourItemsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

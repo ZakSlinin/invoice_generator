@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:invoice_generator/core/router/app_router.dart';
 
 @RoutePage()
 class SimpleScreen extends StatelessWidget {
@@ -95,7 +96,9 @@ class SimpleScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.push(const YourItemsRoute());
+                  },
                   child: const Text(
                     'show More',
                     style: TextStyle(
