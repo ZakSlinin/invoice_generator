@@ -12,7 +12,7 @@ class ControlInvoiceScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF6F6F6),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 6, 24, 24),

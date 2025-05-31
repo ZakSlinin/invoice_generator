@@ -34,13 +34,9 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
 
   bool _validateFields() {
     if (_addressController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Please enter address',
-          ),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please enter address')));
       return false;
     }
 
@@ -49,11 +45,7 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
       final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
       if (!emailRegex.hasMatch(email)) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Please enter a valid email',
-            ),
-          ),
+          const SnackBar(content: Text('Please enter a valid email')),
         );
         return false;
       }
@@ -72,7 +64,7 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
     return BlocBuilder<YourItemsBloc, YourItemsState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: const Color(0xFFF8F8F8),
+          backgroundColor: const Color(0xFFF6F6F6),
           body: GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: SafeArea(
