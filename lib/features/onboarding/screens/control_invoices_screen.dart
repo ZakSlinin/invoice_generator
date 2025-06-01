@@ -23,7 +23,9 @@ class ControlInvoiceScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.router.push(const YourItemsRoute());
+                    },
                     child: Text('Skip', style: textTheme.labelSmall),
                   ),
                 ],
