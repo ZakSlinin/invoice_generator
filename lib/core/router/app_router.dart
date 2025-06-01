@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:invoice_generator/features/get_started/screens/get_started_screen.dart';
-import 'package:invoice_generator/features/onboarding_control_invoices/screens/control_invoices_screen.dart';
-import 'package:invoice_generator/features/onboarding_simple/screens/simple_screen.dart';
-import 'package:invoice_generator/features/onboarding_welcome_to_receipts/screens/welcome_to_receipts_screen.dart';
-import 'package:invoice_generator/features/your_invoices_safe/screens/your_invoices_safe_screen.dart';
+import 'package:invoice_generator/features/onboarding/screens/get_started_screen.dart';
+import 'package:invoice_generator/features/onboarding/screens/welcome_to_receipts_screen.dart';
+import 'package:invoice_generator/features/onboarding/screens/control_invoices_screen.dart';
+import 'package:invoice_generator/features/onboarding/screens/simple_screen.dart';
+import 'package:invoice_generator/features/onboarding/screens/your_invoices_safe_screen.dart';
 import 'package:invoice_generator/features/your_items/screens/your_items_screen.dart';
 
 part 'app_router.gr.dart';
