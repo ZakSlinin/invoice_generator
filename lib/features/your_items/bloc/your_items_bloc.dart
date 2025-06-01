@@ -18,14 +18,16 @@ class YourItemsBloc extends Bloc<YourItemsEvent, YourItemsState> {
   ) async {
     try {
       print('Email: ${event.email}');
-      print('Avatar file: ${event.address}');
-      print('Header file: ${event.phone}');
+      print('Address: ${event.address}');
+      print('Phone: ${event.phone}');
 
       await _repository.saveYourItemsData(
         email: event.email,
         phone: event.phone,
         address: event.address,
       );
+
+
       emit(YourItemsSaveSuccess());
     } catch (e) {
       emit(YourItemsSaveFailed(message: e.toString()));

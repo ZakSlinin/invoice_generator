@@ -39,6 +39,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const WelcomeToReceiptsScreen(),
       );
     },
+    YourInvoicesSafeRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const YourInvoicesSafeScreen(),
+      );
+    },
     YourItemsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -100,6 +106,20 @@ class WelcomeToReceiptsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'WelcomeToReceiptsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [YourInvoicesSafeScreen]
+class YourInvoicesSafeRoute extends PageRouteInfo<void> {
+  const YourInvoicesSafeRoute({List<PageRouteInfo>? children})
+      : super(
+          YourInvoicesSafeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'YourInvoicesSafeRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

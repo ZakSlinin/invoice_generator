@@ -1,6 +1,8 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:invoice_generator/core/di/injection.dart';
+import 'package:invoice_generator/core/router/app_router.dart';
 import 'package:invoice_generator/features/your_items/bloc/your_items_bloc.dart';
 
 @RoutePage()
@@ -17,9 +19,12 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
   final TextEditingController _addressController = TextEditingController();
   String? _errorMessage;
 
+  late final YourItemsBloc _yourItemsBloc;
+
   @override
   void initState() {
     super.initState();
+    _yourItemsBloc = getIt<YourItemsBloc>();
     print('YourItemsScreen: initState');
   }
 
@@ -61,123 +66,130 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return BlocBuilder<YourItemsBloc, YourItemsState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: const Color(0xFFF6F6F6),
-          body: GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: SafeArea(
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: 32),
-                        Text(
-                          'Tell Us About\nYour Business',
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodyLarge?.copyWith(fontSize: 28),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'It will appear on invoice',
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodySmall?.copyWith(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        if (_errorMessage != null) ...[
-                          const SizedBox(height: 16),
+    return BlocListener<YourItemsBloc, YourItemsState>(
+      listener: (context, state) {
+        if (state is YourItemsSaveSuccess) {
+          context.router.push(const YourInvoicesSafeRoute());
+        }
+      },
+      child: BlocBuilder<YourItemsBloc, YourItemsState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: const Color(0xFFF6F6F6),
+            body: GestureDetector(
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: SafeArea(
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 32),
                           Text(
-                            _errorMessage!,
+                            'Tell Us About\nYour Business',
+                            textAlign: TextAlign.center,
+                            style: textTheme.bodyLarge?.copyWith(fontSize: 28),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'It will appear on invoice',
                             textAlign: TextAlign.center,
                             style: textTheme.bodySmall?.copyWith(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          if (_errorMessage != null) ...[
+                            const SizedBox(height: 16),
+                            Text(
+                              _errorMessage!,
+                              textAlign: TextAlign.center,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                          const SizedBox(height: 24),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              children: [
+                                _LabeledTextField(
+                                  label: 'E-mail',
+                                  hint: 'Optional',
+                                  controller: _emailController,
+                                ),
+                                const Divider(height: 32),
+                                _LabeledTextField(
+                                  label: 'Phone',
+                                  hint: 'Optional',
+                                  controller: _phoneController,
+                                ),
+                                const Divider(height: 32),
+                                _LabeledTextField(
+                                  label: 'Address',
+                                  hint: '',
+                                  controller: _addressController,
+                                ),
+                              ],
                             ),
                           ),
                         ],
-                        const SizedBox(height: 24),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            children: [
-                              _LabeledTextField(
-                                label: 'E-mail',
-                                hint: 'Optional',
-                                controller: _emailController,
-                              ),
-                              const Divider(height: 32),
-                              _LabeledTextField(
-                                label: 'Phone',
-                                hint: 'Optional',
-                                controller: _phoneController,
-                              ),
-                              const Divider(height: 32),
-                              _LabeledTextField(
-                                label: 'Address',
-                                hint: '',
-                                controller: _addressController,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    left: 24,
-                    right: 24,
-                    bottom: 32,
-                    child: SizedBox(
-                      height: 64,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3ED36A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32),
+                    Positioned(
+                      left: 24,
+                      right: 24,
+                      bottom: 32,
+                      child: SizedBox(
+                        height: 64,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF3ED36A),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32),
+                            ),
+                            elevation: 0,
                           ),
-                          elevation: 0,
-                        ),
-                        onPressed: () {
-                          if (_validateFields()) {
-                            context.read<YourItemsBloc>().add(
-                              YourItemsSaveEvent(
-                                email: _emailController.text.trim(),
-                                phone: _phoneController.text.trim(),
-                                address: _addressController.text.trim(),
-                              ),
-                            );
-                          }
-                        },
-                        child: const Text(
-                          'Continue',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
+                          onPressed: () {
+                            if (_validateFields()) {
+                              context.read<YourItemsBloc>().add(
+                                YourItemsSaveEvent(
+                                  email: _emailController.text,
+                                  phone: _phoneController.text,
+                                  address: _addressController.text,
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text(
+                            'Continue',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
