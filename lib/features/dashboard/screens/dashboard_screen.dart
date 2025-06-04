@@ -2,23 +2,30 @@ import 'dart:math';
 
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 @RoutePage()
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  String _selectedTab = 'All';
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F6),
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Header
               Row(
                 children: [
                   const CircleAvatar(
@@ -49,31 +56,37 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ),
                   // Settings Icon
-                  IconButton(
-                    icon: const Icon(Icons.settings_outlined),
-                    onPressed: () {
-                      // TODO: Implement settings action
-                    },
+                  InkWell(
+                    child: SvgPicture.asset('assets/svg/settings.svg'),
+                    //TODO: settings button
                   ),
                 ],
               ),
               const SizedBox(height: 24),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 6,
+                  horizontal: 16,
+                ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(246, 246, 246, 1),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: ElevatedButton(
+                      child: TextButton(
                         onPressed: () {
                           // TODO: Implement All filter
+                          setState(() {
+                            _selectedTab = 'All';
+                          });
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromRGBO(69, 187, 80, 1),
+                        style: TextButton.styleFrom(
+                          backgroundColor: _selectedTab == 'All'
+                              ? const Color.fromRGBO(69, 187, 80, 1)
+                              : const Color.fromRGBO(246, 246, 246, 1),
                           elevation: 0,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
@@ -83,7 +96,9 @@ class DashboardScreen extends StatelessWidget {
                         child: Text(
                           'All',
                           style: textTheme.labelLarge?.copyWith(
-                            color: Colors.white,
+                            color: _selectedTab == 'All'
+                                ? Colors.white
+                                : Colors.grey[600],
                           ),
                         ),
                       ),
@@ -92,14 +107,25 @@ class DashboardScreen extends StatelessWidget {
                       child: TextButton(
                         onPressed: () {
                           // TODO: Implement Outstanding filter
+                          setState(() {
+                            _selectedTab = 'Outstanding';
+                          });
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
+                          backgroundColor: _selectedTab == 'Outstanding'
+                              ? const Color.fromRGBO(69, 187, 80, 1)
+                              : const Color.fromRGBO(246, 246, 246, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
                         ),
                         child: Text(
                           'Outstanding',
                           style: textTheme.labelLarge?.copyWith(
-                            color: Colors.grey[600],
+                            color: _selectedTab == 'Outstanding'
+                                ? Colors.white
+                                : Colors.grey[600],
                           ),
                         ),
                       ),
@@ -108,14 +134,25 @@ class DashboardScreen extends StatelessWidget {
                       child: TextButton(
                         onPressed: () {
                           // TODO: Implement Paid filter
+                          setState(() {
+                            _selectedTab = 'Paid';
+                          });
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
+                          backgroundColor: _selectedTab == 'Paid'
+                              ? const Color.fromRGBO(69, 187, 80, 1)
+                              : const Color.fromRGBO(246, 246, 246, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
                         ),
                         child: Text(
                           'Paid',
                           style: textTheme.labelLarge?.copyWith(
-                            color: Colors.grey[600],
+                            color: _selectedTab == 'Paid'
+                                ? Colors.white
+                                : Colors.grey[600],
                           ),
                         ),
                       ),
@@ -147,10 +184,7 @@ class DashboardScreen extends StatelessWidget {
               SizedBox(
                 height: max(
                   MediaQuery.of(context).size.height * 0.2,
-                  min(
-                    MediaQuery.of(context).size.height * 0.33,
-                    300,
-                  ),
+                  min(MediaQuery.of(context).size.height * 0.33, 300),
                 ),
               ),
               Container(
