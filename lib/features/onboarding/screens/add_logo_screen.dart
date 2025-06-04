@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:invoice_generator/core/services/image_picker/image_picker_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
 class AddLogoScreen extends StatefulWidget {
@@ -18,6 +19,31 @@ class AddLogoScreen extends StatefulWidget {
 class _AddLogoScreenState extends State<AddLogoScreen> {
   File? _selectedImageLogo;
   final ImagePicker _picker = ImagePicker();
+  late SharedPreferences _prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
+  Future<void> _initSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    _loadLogoPath();
+  }
+
+  Future<void> _saveLogoPath(String path) async {
+    await _prefs.setString('logo', path);
+  }
+
+  void _loadLogoPath() {
+    final String? savedPath = _prefs.getString('logo');
+    if (savedPath != null) {
+      setState(() {
+        _selectedImageLogo = File(savedPath);
+      });
+    }
+  }
 
   Future<void> _handleLogoPick(ImageSource source) async {
     try {
@@ -26,6 +52,7 @@ class _AddLogoScreenState extends State<AddLogoScreen> {
         setState(() {
           _selectedImageLogo = image;
         });
+        _saveLogoPath(image.path);
       }
       Navigator.pop(context);
     } catch (e) {
@@ -91,7 +118,11 @@ class _AddLogoScreenState extends State<AddLogoScreen> {
                               ),
                             )
                           : Center(
-                              child: Image.asset('assets/images/add_logo.png', height: 120, width: 1920,),
+                              child: Image.asset(
+                                'assets/images/add_logo.png',
+                                height: 120,
+                                width: 1920,
+                              ),
                             ),
                     ),
                     onTap: () => showDialog(
