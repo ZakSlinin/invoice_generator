@@ -26,13 +26,9 @@ class SimpleScreen extends StatelessWidget {
                     onPressed: () {
                       context.router.push(const YourItemsRoute());
                     },
-                    child: const Text(
+                    child: Text(
                       'Skip',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
+                      style: textTheme.labelSmall,
                     ),
                   ),
                 ],

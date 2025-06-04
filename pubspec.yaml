@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  permission_handler: ^11.3.0
 
   auto_route: ^7.8.4
   freezed_annotation: ^2.4.1
@@ -42,6 +43,7 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_bloc: ^9.1.1
   get_it: ^8.0.3
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +80,7 @@ flutter:
   assets:
     - assets/svg/
     - assets/svg/bg.svg
+    - assets/svg/add_logo.svg
     - assets/images/
     - assets/images/onboarding_bg.png
 

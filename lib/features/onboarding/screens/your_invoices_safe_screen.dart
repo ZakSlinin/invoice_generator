@@ -24,9 +24,9 @@ class YourInvoicesSafeScreen extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      context.router.push(const YourItemsRoute());
+
                     },
-                    child: Text('Skip', style: textTheme.labelLarge),
+                    child: Text('Skip', style: textTheme.labelSmall),
                   ),
                 ],
               ),
@@ -44,10 +44,7 @@ class YourInvoicesSafeScreen extends StatelessWidget {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  style: textTheme.bodySmall?.copyWith(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                  style: textTheme.bodySmall,
                   children: const [
                     TextSpan(
                       text: 'All your invoices are now synced to your account ',
@@ -64,10 +61,7 @@ class YourInvoicesSafeScreen extends StatelessWidget {
               Text(
                 'When you reinstall the app,\nremind yourself to log back in',
                 textAlign: TextAlign.center,
-                style: textTheme.bodySmall?.copyWith(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
+                style: textTheme.bodySmall,
               ),
               const SizedBox(height: 24),
               SizedBox(
@@ -81,7 +75,9 @@ class YourInvoicesSafeScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.push(const AddLogoRoute());
+                  },
                   child: const Text(
                     'Continue',
                     style: TextStyle(
