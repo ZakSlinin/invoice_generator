@@ -26,10 +26,7 @@ class SimpleScreen extends StatelessWidget {
                     onPressed: () {
                       context.router.push(const YourItemsRoute());
                     },
-                    child: Text(
-                      'Skip',
-                      style: textTheme.labelSmall,
-                    ),
+                    child: Text('Skip', style: textTheme.labelSmall),
                   ),
                 ],
               ),
@@ -88,7 +85,7 @@ class SimpleScreen extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3ED36A),
+                    backgroundColor: const Color.fromRGBO(69, 187, 80, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32),
                     ),

@@ -24,7 +24,7 @@ class YourInvoicesSafeScreen extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-
+                      //TODO: skip logic implements
                     },
                     child: Text('Skip', style: textTheme.labelSmall),
                   ),
@@ -69,7 +69,7 @@ class YourInvoicesSafeScreen extends StatelessWidget {
                 height: 64,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3ED36A),
+                    backgroundColor: const Color.fromRGBO(69, 187, 80, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32),
                     ),

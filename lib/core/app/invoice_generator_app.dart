@@ -1,21 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/core/theme/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../router/app_router.dart';
 
 class InvoiceGeneratorApp extends StatelessWidget {
-  InvoiceGeneratorApp({super.key});
+  final AppRouter appRouter;
+  final bool completedOnboarding;
 
-  final _appRouter = AppRouter();
+  InvoiceGeneratorApp({
+    required this.appRouter,
+    required this.completedOnboarding,
+    super.key,
+  });
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: lightTheme,
-      routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
+      routerDelegate: appRouter.delegate(),
+      routeInformationParser: appRouter.defaultRouteParser(),
+      builder: (context, router) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (completedOnboarding) {
+            appRouter.replace(DashboardRoute());
+          } else {
+            appRouter.replace(GetStartedRoute());
+          }
+        });
+
+        return router!;
+      },
     );
   }
 }

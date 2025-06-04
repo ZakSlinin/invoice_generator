@@ -2,10 +2,33 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:invoice_generator/core/router/app_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
-class GetStartedScreen extends StatelessWidget {
+class GetStartedScreen extends StatefulWidget {
   const GetStartedScreen({super.key});
+
+  @override
+  State<GetStartedScreen> createState() => _GetStartedScreenState();
+}
+
+class _GetStartedScreenState extends State<GetStartedScreen> {
+  late SharedPreferences _prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
+  Future<void> _initSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    _saveCheckFirstLogin();
+  }
+
+  Future<void> _saveCheckFirstLogin() async {
+    await _prefs.setBool('first_login', true);
+  }
 
   @override
   Widget build(BuildContext context) {
