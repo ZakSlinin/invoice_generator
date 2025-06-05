@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:invoice_generator/features/dashboard/screens/dashboard_screen.dart';
+import 'package:invoice_generator/features/new_invoice/screens/new_invoice_screen.dart';
 import 'package:invoice_generator/features/onboarding/screens/add_logo_screen.dart';
 import 'package:invoice_generator/features/onboarding/screens/get_started_screen.dart';
 import 'package:invoice_generator/features/onboarding/screens/welcome_to_receipts_screen.dart';
@@ -22,5 +23,6 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: YourInvoicesSafeRoute.page),
     AutoRoute(page: AddLogoRoute.page),
     AutoRoute(page: DashboardRoute.page),
+    AutoRoute(page: NewInvoiceRoute.page),
   ];
 }

@@ -39,6 +39,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const GetStartedScreen(),
       );
     },
+    NewInvoiceRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const NewInvoiceScreen(),
+      );
+    },
     SimpleRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -118,6 +124,20 @@ class GetStartedRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'GetStartedRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [NewInvoiceScreen]
+class NewInvoiceRoute extends PageRouteInfo<void> {
+  const NewInvoiceRoute({List<PageRouteInfo>? children})
+      : super(
+          NewInvoiceRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NewInvoiceRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

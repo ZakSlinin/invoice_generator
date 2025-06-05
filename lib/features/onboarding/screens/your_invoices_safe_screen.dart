@@ -24,7 +24,7 @@ class YourInvoicesSafeScreen extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      //TODO: skip logic implements
+                      context.router.push(const DashboardRoute());
                     },
                     child: Text('Skip', style: textTheme.labelSmall),
                   ),

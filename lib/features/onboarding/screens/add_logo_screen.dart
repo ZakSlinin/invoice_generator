@@ -80,7 +80,7 @@ class _AddLogoScreenState extends State<AddLogoScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          // TODO: Implement Skip logic
+                          context.router.push(const DashboardRoute());
                         },
                         child: Text('Skip', style: textTheme.labelSmall),
                       ),

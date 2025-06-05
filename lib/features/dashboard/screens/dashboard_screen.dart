@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:invoice_generator/core/router/app_router.dart';
 
 @RoutePage()
 class DashboardScreen extends StatefulWidget {
@@ -211,7 +213,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       elevation: 0,
                     ),
                     onPressed: () {
-                      // TODO: Implement Create Invoice logic
+                      context.router.push(NewInvoiceRoute());
                     },
                     child: Text(
                       'Create Invoice',
