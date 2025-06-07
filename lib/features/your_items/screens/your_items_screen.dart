@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invoice_generator/core/di/injection.dart';
 import 'package:invoice_generator/core/router/app_router.dart';
+import 'package:invoice_generator/core/widgets/label_text_field/label_text_field.dart';
 import 'package:invoice_generator/features/your_items/bloc/your_items_bloc.dart';
 
 @RoutePage()
@@ -124,19 +125,19 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
                             ),
                             child: Column(
                               children: [
-                                _LabeledTextField(
+                                LabeledTextField(
                                   label: 'E-mail',
                                   hint: 'Optional',
                                   controller: _emailController,
                                 ),
                                 const Divider(height: 32),
-                                _LabeledTextField(
+                                LabeledTextField(
                                   label: 'Phone',
                                   hint: 'Optional',
                                   controller: _phoneController,
                                 ),
                                 const Divider(height: 32),
-                                _LabeledTextField(
+                                LabeledTextField(
                                   label: 'Address',
                                   hint: '',
                                   controller: _addressController,
@@ -155,7 +156,12 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
                         height: 64,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromRGBO(69, 187, 80, 1),
+                            backgroundColor: const Color.fromRGBO(
+                              69,
+                              187,
+                              80,
+                              1,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(32),
                             ),
@@ -190,56 +196,6 @@ class _YourItemsScreenState extends State<YourItemsScreen> {
           );
         },
       ),
-    );
-  }
-}
-
-class _LabeledTextField extends StatelessWidget {
-  final String label;
-  final String hint;
-  final TextEditingController controller;
-
-  const _LabeledTextField({
-    required this.label,
-    required this.hint,
-    required this.controller,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: TextField(
-            textAlign: TextAlign.start,
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: TextStyle(
-                color: Colors.grey[400],
-                fontWeight: FontWeight.w400,
-              ),
-              border: InputBorder.none,
-              isDense: true,
-              contentPadding: EdgeInsets.zero,
-            ),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
-            controller: controller,
-          ),
-        ),
-      ],
     );
   }
 }

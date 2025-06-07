@@ -1,7 +1,11 @@
+import 'dart:math';
+
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
+@RoutePage()
 class NewInvoiceScreen extends StatefulWidget {
   const NewInvoiceScreen({super.key});
 
@@ -13,17 +17,14 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
   final TextEditingController _issuedDateController = TextEditingController();
   final TextEditingController _dueDateController = TextEditingController();
   final TextEditingController _invoiceNumberController =
-  TextEditingController();
+      TextEditingController();
+  final TextEditingController _billToController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _issuedDateController.text =
-    '${DateTime
-        .now()
-        .day} ${DateFormat.MMMM().format(DateTime.now())} ${DateTime
-        .now()
-        .year}';
+        '${DateTime.now().day} ${DateFormat.MMMM().format(DateTime.now())} ${DateTime.now().year}';
     _invoiceNumberController.text = '001';
   }
 
@@ -37,168 +38,358 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme
-        .of(context)
-        .textTheme;
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(246, 246, 246, 1),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Text('Cancel', style: textTheme.labelSmall),
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            // TODO: Implement preview functionality
-                          },
-                          child: Text(
-                            'Preview',
-                            style: textTheme.labelSmall?.copyWith(
-                              fontWeight: FontWeight.normal,
+    final textTheme = Theme.of(context).textTheme;
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: const Color.fromRGBO(246, 246, 246, 1),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Text('Cancel', style: textTheme.labelSmall),
+                    ),
+                    Container(
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              // TODO: Implement preview functionality
+                            },
+                            child: Text(
+                              'Preview',
+                              style: textTheme.labelSmall?.copyWith(
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 28),
-                        InkWell(
+                          const SizedBox(width: 28),
+                          InkWell(
+                            onTap: () {
+                              // TODO: Implement save functionality
+                            },
+                            child: Text('Done', style: textTheme.labelSmall),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Center(child: Text('New invoice', style: textTheme.bodyLarge)),
+                const SizedBox(height: 24),
+                // Date and Invoice Number Section
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Issued', style: textTheme.bodySmall),
+                          const SizedBox(height: 4),
+                          _buildDateField(controller: _issuedDateController),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Due', style: textTheme.bodySmall),
+                          const SizedBox(height: 4),
+                          _buildDateField(
+                            controller: _dueDateController,
+                            hintText: '-',
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text('#', style: textTheme.bodySmall),
+                          const SizedBox(height: 4),
+                          _buildInvoiceNumberField(
+                            controller: _invoiceNumberController,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Client', style: textTheme.bodySmall),
+                        const SizedBox(height: 8),
+                        _buildAddButton(
+                          label: 'Add Client',
                           onTap: () {
-                            // TODO: Implement save functionality
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (BuildContext context) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(
+                                      context,
+                                    ).viewInsets.bottom,
+                                  ),
+                                  child: Container(
+                                    color: Color.fromRGBO(243, 243, 243, 1),
+                                    padding: EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text(
+                                                'Cancel',
+                                                style: textTheme.labelSmall
+                                                    ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'Done',
+                                                style: textTheme.labelSmall,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          'New Client',
+                                          style: textTheme.bodyLarge,
+                                        ),
+                                        const SizedBox(height: 24),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Container(
+                                                child: TextField(
+                                                  textAlign: TextAlign.start,
+                                                  decoration: InputDecoration(
+                                                    fillColor: Colors.white,
+                                                    filled: true,
+                                                    hintText: 'Bill To',
+                                                    hintStyle: textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          color: Colors.grey,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 16,
+                                                        ),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            8,
+                                                          ),
+                                                      borderSide: BorderSide.none,
+                                                    ),
+                                                    isDense: true,
+                                                    contentPadding:
+                                                        EdgeInsets.all(8),
+                                                  ),
+                                                  style: textTheme.bodyMedium
+                                                      ?.copyWith(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 12,
+                                                      ),
+                                                  controller: _billToController,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 24),
+                                        // Bill To input
+                                        Text(
+                                          'Contacts',
+                                          style: textTheme.bodySmall,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        // Contacts bloc
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                            vertical: 12,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              _buildContactRow(
+                                                textTheme,
+                                                'E-mail',
+                                                'Optional',
+                                              ),
+                                              const Divider(),
+                                              _buildContactRow(
+                                                textTheme,
+                                                'Phone',
+                                                'Optional',
+                                              ),
+                                              const Divider(),
+                                              _buildContactRow(
+                                                textTheme,
+                                                'Address',
+                                                '',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 24),
+                                        // Button
+                                        SizedBox(
+                                          height: 60,
+                                          width: double.infinity,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              // TODO: Implement Import From Contacts functionality
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.white,
+                                              foregroundColor:
+                                                  const Color.fromRGBO(
+                                                    69,
+                                                    187,
+                                                    80,
+                                                    1,
+                                                  ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(32),
+                                                side: const BorderSide(
+                                                  color: Color.fromRGBO(
+                                                    69,
+                                                    187,
+                                                    80,
+                                                    1,
+                                                  ),
+                                                ),
+                                              ),
+                                              elevation: 0,
+                                            ),
+                                            child: const Text(
+                                              'Import From Contacts',
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: max(
+                                            MediaQuery.of(context).size.height *
+                                                0.2,
+                                            min(
+                                              MediaQuery.of(
+                                                    context,
+                                                  ).size.height *
+                                                  0.33,
+                                              300,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
                           },
-                          child: Text('Done', style: textTheme.labelSmall),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Center(child: Text('New invoice', style: textTheme.bodyLarge)),
-              const SizedBox(height: 24),
-              // Date and Invoice Number Section
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Issued', style: textTheme.bodySmall),
-                        const SizedBox(height: 4),
-                        _buildDateField(controller: _issuedDateController),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Due', style: textTheme.bodySmall),
-                        const SizedBox(height: 4),
-                        _buildDateField(
-                          controller: _dueDateController,
-                          hintText: '-',
+                        const SizedBox(height: 24),
+                        // Items Section
+                        Text('Items', style: textTheme.bodySmall),
+                        const SizedBox(height: 8),
+                        _buildAddButton(
+                          label: 'Add Item',
+                          onTap: () {
+                            // TODO: Implement Add Item functionality
+                          },
                         ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text('#', style: textTheme.bodySmall),
-                        const SizedBox(height: 4),
-                        _buildInvoiceNumberField(
-                          controller: _invoiceNumberController,
+                        const SizedBox(height: 24),
+                        // Summary Section
+                        Text('Summary', style: textTheme.bodySmall),
+                        const SizedBox(height: 8),
+                        _buildTotalRow('Total', '0.00'),
+                        const SizedBox(height: 24),
+                        // Photos Section
+                        Text('Photos', style: textTheme.bodySmall),
+                        const SizedBox(height: 8),
+                        _buildAddPhotoButton(
+                          label: 'Add Photo',
+                          onTap: () {
+                            // TODO: Implement Add Photo functionality
+                          },
                         ),
+                        const SizedBox(height: 32),
                       ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Client Section
-                      Text('Client', style: textTheme.bodySmall),
-                      const SizedBox(height: 8),
-                      _buildAddButton(
-                        label: 'Add Client',
-                        onTap: () {
-                          // TODO: Implement Add Client functionality
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      // Items Section
-                      Text('Items', style: textTheme.bodySmall),
-                      const SizedBox(height: 8),
-                      _buildAddButton(
-                        label: 'Add Item',
-                        onTap: () {
-                          // TODO: Implement Add Item functionality
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      // Summary Section
-                      Text('Summary', style: textTheme.bodySmall),
-                      const SizedBox(height: 8),
-                      _buildTotalRow('Total', '0.00'),
-                      const SizedBox(height: 24),
-                      // Photos Section
-                      Text('Photos', style: textTheme.bodySmall),
-                      const SizedBox(height: 8),
-                      _buildAddPhotoButton(
-                        label: 'Add Photo',
-                        onTap: () {
-                          // TODO: Implement Add Photo functionality
-                        },
-                      ),
-                      const SizedBox(height: 32),
-                    ],
-                  ),
-                ),
-              ),
-              // Create Invoice Button
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(69, 187, 80, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    elevation: 0,
-                  ),
-                  onPressed: () {
-                    // TODO: Implement Create Invoice functionality
-                  },
-                  child: Text(
-                    'Create Invoice',
-                    style: textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(69, 187, 80, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32),
+                      ),
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      // TODO: Implement Create Invoice functionality
+                    },
+                    child: Text(
+                      'Create Invoice',
+                      style: textTheme.titleMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -223,10 +414,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
           isDense: true,
           contentPadding: EdgeInsets.zero,
         ),
-        style: Theme
-            .of(context)
-            .textTheme
-            .labelLarge,
+        style: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }
@@ -246,10 +434,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
           isDense: true,
           contentPadding: EdgeInsets.zero,
         ),
-        style: Theme
-            .of(context)
-            .textTheme
-            .labelLarge,
+        style: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }
@@ -288,9 +473,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
     required String label,
     required VoidCallback onTap,
   }) {
-    final textTheme = Theme
-        .of(context)
-        .textTheme;
+    final textTheme = Theme.of(context).textTheme;
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -299,7 +482,9 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
           borderRadius: BorderRadius.circular(8),
           color: Color.fromRGBO(255, 255, 255, 1),
           image: const DecorationImage(
-            image: AssetImage('assets/images/button_bg.png'), fit: BoxFit.cover)
+            image: AssetImage('assets/images/button_bg.png'),
+            fit: BoxFit.fitWidth,
+          ),
         ),
         child: Center(
           child: Row(
@@ -307,14 +492,9 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
             children: [
               SvgPicture.asset('assets/svg/add.svg'),
               const SizedBox(width: 8),
-              Text(
-                label,
-                style: textTheme.bodyLarge?.copyWith(fontSize: 18),
-              ),
+              Text(label, style: textTheme.bodyLarge?.copyWith(fontSize: 18)),
               const SizedBox(width: 8),
-              InkWell(
-                child: SvgPicture.asset('assets/svg/premium_button.svg'),
-              ),
+              InkWell(child: SvgPicture.asset('assets/svg/premium_button.svg')),
             ],
           ),
         ),
@@ -354,6 +534,37 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
           ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactRow(TextTheme textTheme, String label, String hintText) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(width: 80, child: Text(label, style: textTheme.bodyMedium)),
+        const SizedBox(width: 16),
+        Expanded(
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: TextStyle(
+                color: Colors.grey[400],
+                fontWeight: FontWeight.w400,
+              ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(vertical: 20),
+            ),
+            style: textTheme.bodyMedium?.copyWith(
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
+            keyboardType: label == 'E-mail'
+                ? TextInputType.emailAddress
+                : (label == 'Phone' ? TextInputType.phone : TextInputType.text),
+            maxLines: label == 'Address' ? null : 1,
+          ),
         ),
       ],
     );

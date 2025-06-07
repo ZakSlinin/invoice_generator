@@ -24,9 +24,9 @@ class InvoiceGeneratorApp extends StatelessWidget {
       builder: (context, router) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (completedOnboarding) {
-            appRouter.replace(DashboardRoute());
+            appRouter.replace(const DashboardRoute()); //TODO: refactor to Dashboard
           } else {
-            appRouter.replace(GetStartedRoute());
+            appRouter.replace(const GetStartedRoute());
           }
         });
 
