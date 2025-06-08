@@ -15,14 +15,14 @@ part 'app_router.gr.dart';
 class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
-    AutoRoute(page: GetStartedRoute.page),
-    AutoRoute(page: WelcomeToReceiptsRoute.page),
-    AutoRoute(page: ControlInvoiceRoute.page),
-    AutoRoute(page: SimpleRoute.page),
-    AutoRoute(page: YourItemsRoute.page),
-    AutoRoute(page: YourInvoicesSafeRoute.page),
-    AutoRoute(page: AddLogoRoute.page),
-    AutoRoute(page: DashboardRoute.page),
-    AutoRoute(page: NewInvoiceRoute.page),
+    AutoRoute(page: GetStartedRoute.page, path: '/get-started'),
+    AutoRoute(page: WelcomeToReceiptsRoute.page, path: '/welcome-to-receipts'),
+    AutoRoute(page: ControlInvoiceRoute.page, path: '/control-invoice'),
+    AutoRoute(page: SimpleRoute.page, path: '/simple'),
+    AutoRoute(page: YourItemsRoute.page, path: '/your-items'),
+    AutoRoute(page: YourInvoicesSafeRoute.page, path: '/your-invoices-safe'),
+    AutoRoute(page: AddLogoRoute.page, path: '/add-logo'),
+    AutoRoute(page: DashboardRoute.page, path: '/dashboard'),
+    AutoRoute(page: NewInvoiceRoute.page, path: '/new-invoice'),
   ];
 }

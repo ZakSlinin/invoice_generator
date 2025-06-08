@@ -9,6 +9,7 @@ class NewClientRepositoryImpl implements NewClientRepository {
     String? email,
     String? phone,
     required String address,
+    required String billTo,
   }) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -19,6 +20,7 @@ class NewClientRepositoryImpl implements NewClientRepository {
     await prefs.setString('client_${clientId}_email', email ?? '');
     await prefs.setString('client_${clientId}_phone', phone ?? '');
     await prefs.setString('client_${clientId}_address', address);
+    await prefs.setString('client_${clientId}_billTo', billTo);
 
     clientsList.add(clientId);
     await prefs.setStringList(_clientsKey, clientsList);
@@ -30,7 +32,7 @@ class NewClientRepositoryImpl implements NewClientRepository {
     final clientsList = prefs.getStringList(_clientsKey) ?? [];
 
     if (clientsList.isEmpty) {
-      return {'email': null, 'phone': null, 'address': null};
+      return {'email': null, 'phone': null, 'address': null, 'billTo': null};
     }
 
     final lastClientId = clientsList.last;
@@ -39,6 +41,7 @@ class NewClientRepositoryImpl implements NewClientRepository {
       'email': prefs.getString('client_${lastClientId}_email'),
       'phone': prefs.getString('client_${lastClientId}_phone'),
       'address': prefs.getString('client_${lastClientId}_address'),
+      'billTo': prefs.getString('client_${lastClientId}_billTo'),
     };
   }
 
@@ -52,6 +55,7 @@ class NewClientRepositoryImpl implements NewClientRepository {
         'email': prefs.getString('client_${clientId}_email'),
         'phone': prefs.getString('client_${clientId}_phone'),
         'address': prefs.getString('client_${clientId}_address'),
+        'billTo': prefs.getString('client_${clientId}_billTo'),
       };
     }).toList();
   }
@@ -64,6 +68,7 @@ class NewClientRepositoryImpl implements NewClientRepository {
       'email': prefs.getString('client_${clientId}_email'),
       'phone': prefs.getString('client_${clientId}_phone'),
       'address': prefs.getString('client_${clientId}_address'),
+      'billTo': prefs.getString('client_${clientId}_billTo'),
     };
   }
 }

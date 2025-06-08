@@ -3,13 +3,15 @@ part of 'new_client_bloc.dart';
 class NewClientEvent {}
 
 class NewClientSaveEvent extends NewClientEvent {
-  final String email;
-  final String phone;
+  final String? email;
+  final String? phone;
   final String address;
+  final String billTo;
 
   NewClientSaveEvent({
-    required this.email,
-    required this.phone,
+    this.email,
+    this.phone,
     required this.address,
+    required this.billTo,
   });
 }

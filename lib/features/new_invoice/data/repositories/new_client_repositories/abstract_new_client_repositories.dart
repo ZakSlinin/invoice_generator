@@ -3,7 +3,8 @@ abstract class NewClientRepository {
     String? email,
     String? phone,
     required String address,
-});
+    required String billTo,
+  });
 
   Future<Map<String, String?>> getNewClientData();
 }

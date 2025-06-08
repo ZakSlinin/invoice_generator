@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_generator/core/theme/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 import '../router/app_router.dart';
 
@@ -21,15 +22,12 @@ class InvoiceGeneratorApp extends StatelessWidget {
       theme: lightTheme,
       routerDelegate: appRouter.delegate(),
       routeInformationParser: appRouter.defaultRouteParser(),
+      routeInformationProvider: PlatformRouteInformationProvider(
+        initialRouteInformation: RouteInformation(
+          location: completedOnboarding ? '/dashboard' : '/get-started',
+        ),
+      ),
       builder: (context, router) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (completedOnboarding) {
-            appRouter.replace(const DashboardRoute()); //TODO: refactor to Dashboard
-          } else {
-            appRouter.replace(const GetStartedRoute());
-          }
-        });
-
         return router!;
       },
     );

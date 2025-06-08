@@ -12,20 +12,21 @@ class NewClientBloc extends Bloc<NewClientEvent, NewClientState> {
   }
 
   Future<void> _onSave(
-      NewClientSaveEvent event,
-      Emitter<NewClientState> emit,
-      ) async {
+    NewClientSaveEvent event,
+    Emitter<NewClientState> emit,
+  ) async {
     try {
       print('Email: ${event.email}');
       print('Address: ${event.address}');
       print('Phone: ${event.phone}');
+      print('Bill To: ${event.billTo}');
 
       await _repository.saveNewClientData(
         email: event.email,
         phone: event.phone,
         address: event.address,
+        billTo: event.billTo,
       );
-
 
       emit(NewClientSaveSuccess());
     } catch (e) {
