@@ -1,4 +1,4 @@
-import 'package:invoice_generator/features/new_invoice/data/repositories/new_client_repositories/abstract_new_client_repositories.dart';
+import 'package:invoice_generator/features/new_invoice/data/repositories/new_client_repositories/abstract_new_client_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NewClientRepositoryImpl implements NewClientRepository {
