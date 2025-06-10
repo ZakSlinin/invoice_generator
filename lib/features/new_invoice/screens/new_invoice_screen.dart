@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:invoice_generator/features/new_invoice/bloc/new_client_bloc/new_client_bloc.dart';
+import 'package:invoice_generator/features/new_invoice/services/currency_service.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/client_section.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/create_invoice_button.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/currency_modal.dart';
@@ -38,11 +39,20 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
       TextEditingController();
 
   String? _errorMessage;
+  String _selectedCurrency = 'USD';
 
   @override
   void initState() {
     super.initState();
     _initializeControllers();
+    _loadSelectedCurrency();
+  }
+
+  Future<void> _loadSelectedCurrency() async {
+    final currency = await CurrencyService.getSelectedCurrency();
+    setState(() {
+      _selectedCurrency = currency;
+    });
   }
 
   void _initializeControllers() {
@@ -139,6 +149,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
                               textTheme: textTheme,
                               total: '0.00',
                               onOpenCurrency: _showCurrency,
+                              selectedCurrency: _selectedCurrency,
                             ),
                             const SizedBox(height: 24),
                             PhotosSection(
@@ -203,7 +214,14 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
       builder: (BuildContext context) {
         return FractionallySizedBox(
           heightFactor: 0.9,
-          child: CurrencyModal(textTheme: Theme.of(context).textTheme),
+          child: CurrencyModal(
+            textTheme: Theme.of(context).textTheme,
+            onCurrencySelected: (String currency) {
+              setState(() {
+                _selectedCurrency = currency;
+              });
+            },
+          ),
         );
       },
     );

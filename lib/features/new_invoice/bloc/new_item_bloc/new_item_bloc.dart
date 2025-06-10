@@ -24,6 +24,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
       print('Unit Type: ${event.unitType}');
       print('Discount: ${event.discount}');
       print('Taxable: ${event.taxable}');
+      print('Currency: ${event.currency}');
 
       await _repository.saveNewItemData(
         billTo: event.billTo,
@@ -34,6 +35,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         unitType: event.unitType,
         discount: event.discount,
         taxable: event.taxable,
+        currency: event.currency,
       );
 
       emit(NewItemSaveSuccess());

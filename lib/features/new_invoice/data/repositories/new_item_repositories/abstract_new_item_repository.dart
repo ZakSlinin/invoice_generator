@@ -8,5 +8,6 @@ abstract class NewItemRepository {
     required String unitType,
     required bool discount,
     required String taxable,
+    required String currency,
   });
 }

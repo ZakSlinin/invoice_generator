@@ -5,6 +5,8 @@ class UnitAndQuantitySection extends StatelessWidget {
   final TextEditingController issuedDateController;
   final TextEditingController dueDateController;
   final TextEditingController invoiceNumberController;
+  final String selectedCurrency;
+  final VoidCallback onCurrencyTap;
 
   const UnitAndQuantitySection({
     super.key,
@@ -12,6 +14,8 @@ class UnitAndQuantitySection extends StatelessWidget {
     required this.issuedDateController,
     required this.dueDateController,
     required this.invoiceNumberController,
+    required this.selectedCurrency,
+    required this.onCurrencyTap,
   });
 
   @override
@@ -26,7 +30,36 @@ class UnitAndQuantitySection extends StatelessWidget {
             children: [
               Text('Unit Price', style: textTheme.bodySmall),
               const SizedBox(height: 4),
-              _buildDateField(context, controller: issuedDateController),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildDateField(
+                      context,
+                      controller: issuedDateController,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  InkWell(
+                    onTap: onCurrencyTap,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        selectedCurrency,
+                        style: textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -66,10 +99,10 @@ class UnitAndQuantitySection extends StatelessWidget {
   }
 
   Widget _buildDateField(
-      BuildContext context, {
-        required TextEditingController controller,
-        String? hintText,
-      }) {
+    BuildContext context, {
+    required TextEditingController controller,
+    String? hintText,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       decoration: BoxDecoration(
@@ -78,6 +111,7 @@ class UnitAndQuantitySection extends StatelessWidget {
       ),
       child: TextField(
         controller: controller,
+        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           hintText: hintText,
           border: InputBorder.none,
@@ -90,9 +124,9 @@ class UnitAndQuantitySection extends StatelessWidget {
   }
 
   Widget _buildInvoiceNumberField(
-      BuildContext context, {
-        required TextEditingController controller,
-      }) {
+    BuildContext context, {
+    required TextEditingController controller,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       decoration: BoxDecoration(

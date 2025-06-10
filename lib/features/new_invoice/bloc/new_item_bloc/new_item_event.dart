@@ -11,6 +11,7 @@ class NewItemSaveEvent extends NewItemEvent {
   final String unitType;
   final bool discount;
   final String taxable;
+  final String currency;
 
   NewItemSaveEvent({
     required this.billTo,
@@ -21,5 +22,6 @@ class NewItemSaveEvent extends NewItemEvent {
     required this.unitType,
     required this.discount,
     required this.taxable,
+    required this.currency,
   });
 }

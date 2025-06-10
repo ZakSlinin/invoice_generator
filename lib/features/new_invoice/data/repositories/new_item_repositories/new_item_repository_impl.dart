@@ -14,6 +14,7 @@ class NewItemRepositoryImpl implements NewItemRepository {
     required String unitType,
     required bool discount,
     required String taxable,
+    required String currency,
   }) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -29,6 +30,7 @@ class NewItemRepositoryImpl implements NewItemRepository {
     await prefs.setString('item_${itemId}_unitType', unitType);
     await prefs.setBool('item_${itemId}_discount', discount);
     await prefs.setString('item_${itemId}_taxable', taxable);
+    await prefs.setString('item_${itemId}_currency', currency);
 
     itemsList.add(itemId);
     await prefs.setStringList(_itemsKey, itemsList);
@@ -49,6 +51,7 @@ class NewItemRepositoryImpl implements NewItemRepository {
         'unitType': prefs.getString('item_${itemId}_unitType'),
         'discount': prefs.getBool('item_${itemId}_discount'),
         'taxable': prefs.getString('item_${itemId}_taxable'),
+        'currency': prefs.getString('item_${itemId}_currency'),
       };
     }).toList();
   }
@@ -66,6 +69,7 @@ class NewItemRepositoryImpl implements NewItemRepository {
       'unitType': prefs.getString('item_${itemId}_unitType'),
       'discount': prefs.getBool('item_${itemId}_discount'),
       'taxable': prefs.getString('item_${itemId}_taxable'),
+      'currency': prefs.getString('item_${itemId}_currency'),
     };
   }
 }

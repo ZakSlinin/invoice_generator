@@ -1,9 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invoice_generator/features/new_invoice/bloc/new_item_bloc/new_item_bloc.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/uint_and_quantily_section.dart';
+import 'package:invoice_generator/features/new_invoice/widgets/currency_modal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewItemModal extends StatefulWidget {
   final TextTheme textTheme;
@@ -25,6 +25,8 @@ class _NewItemModalState extends State<NewItemModal> {
 
   bool _saveToCatalog = false;
   bool _isTaxable = false;
+  bool _isDiscount = false;
+  String _selectedCurrency = 'USD';
 
   _NewItemModalState({required this.textTheme});
 
@@ -32,6 +34,14 @@ class _NewItemModalState extends State<NewItemModal> {
   void initState() {
     super.initState();
     _discountController.text = '0';
+    _loadSelectedCurrency();
+  }
+
+  Future<void> _loadSelectedCurrency() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedCurrency = prefs.getString('selected_currency') ?? 'USD';
+    });
   }
 
   @override
@@ -56,9 +66,24 @@ class _NewItemModalState extends State<NewItemModal> {
         unitType: _unitTypeController.text,
         discount: _discountController.text != '0',
         taxable: _isTaxable ? 'Yes' : 'No',
+        currency: _selectedCurrency,
       ),
     );
     Navigator.pop(context);
+  }
+
+  void _showCurrencyModal() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => CurrencyModal(
+        textTheme: Theme.of(context).textTheme,
+        onCurrencySelected: (String currencyCode) {
+          setState(() {
+            _selectedCurrency = currencyCode;
+          });
+        },
+      ),
+    );
   }
 
   @override
@@ -108,6 +133,8 @@ class _NewItemModalState extends State<NewItemModal> {
                 dueDateController: _quantityController,
                 invoiceNumberController: _unitTypeController,
                 issuedDateController: _unitPriceController,
+                selectedCurrency: _selectedCurrency,
+                onCurrencyTap: _showCurrencyModal,
               ),
               const SizedBox(height: 24),
               _buildDiscountSection(),
@@ -233,7 +260,7 @@ class _NewItemModalState extends State<NewItemModal> {
               _saveToCatalog = value;
             });
           },
-          activeColor: const Color.fromRGBO(69, 187, 80, 1),
+          activeThumbColor: const Color.fromRGBO(69, 187, 80, 1),
         ),
       ],
     );
@@ -251,16 +278,32 @@ class _NewItemModalState extends State<NewItemModal> {
         children: [
           Text('Discount', style: widget.textTheme.bodySmall),
           const SizedBox(height: 4),
-          TextField(
-            controller: _discountController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              hintText: '0',
-              border: InputBorder.none,
-              isDense: true,
-              contentPadding: EdgeInsets.zero,
-            ),
-            style: widget.textTheme.labelLarge,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _discountController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: '0',
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  style: widget.textTheme.labelLarge,
+                ),
+              ),
+              Switch(
+                activeThumbColor: const Color.fromRGBO(69, 187, 80, 1),
+                value: _isDiscount,
+                onChanged: (value) {
+                  setState(() {
+                    _isDiscount = value;
+                  });
+                },
+              ),
+            ],
           ),
         ],
       ),
