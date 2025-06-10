@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:invoice_generator/features/new_invoice/bloc/new_client_bloc/new_client_bloc.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/client_section.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/create_invoice_button.dart';
+import 'package:invoice_generator/features/new_invoice/widgets/currency_modal.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/date_and_invoice_section.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/header_widget.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/items_section.dart';
@@ -134,7 +135,11 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
                               onAddItem: _showNewItemModal,
                             ),
                             const SizedBox(height: 24),
-                            SummarySection(textTheme: textTheme, total: '0.00'),
+                            SummarySection(
+                              textTheme: textTheme,
+                              total: '0.00',
+                              onOpenCurrency: _showCurrency,
+                            ),
                             const SizedBox(height: 24),
                             PhotosSection(
                               textTheme: textTheme,
@@ -184,9 +189,21 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       builder: (BuildContext context) {
-        return NewItemModal(
-          textTheme: Theme.of(context).textTheme,
+        return NewItemModal(textTheme: Theme.of(context).textTheme);
+      },
+    );
+  }
+
+  void _showCurrency() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.9,
+          child: CurrencyModal(textTheme: Theme.of(context).textTheme),
         );
       },
     );
