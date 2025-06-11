@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class UnitAndQuantitySection extends StatelessWidget {
   final TextTheme textTheme;
@@ -32,18 +33,11 @@ class UnitAndQuantitySection extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Expanded(
-                    child: _buildDateField(
-                      context,
-                      controller: issuedDateController,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
                   InkWell(
                     onTap: onCurrencyTap,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
+                        horizontal: 12,
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
@@ -51,7 +45,7 @@ class UnitAndQuantitySection extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        selectedCurrency,
+                        '${DateTime.now().day} ${DateFormat.MMMM().format(DateTime.now())} ${DateTime.now().year}',
                         style: textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -63,9 +57,8 @@ class UnitAndQuantitySection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 12),
         Expanded(
-          flex: 2,
+          flex: 3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

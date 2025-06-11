@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invoice_generator/features/new_invoice/bloc/new_item_bloc/new_item_bloc.dart';
-import 'package:invoice_generator/features/new_invoice/widgets/uint_and_quantily_section.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/currency_modal.dart';
+import 'package:invoice_generator/features/new_invoice/widgets/uint_and_quantily_section.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NewItemModal extends StatefulWidget {
@@ -267,18 +267,19 @@ class _NewItemModalState extends State<NewItemModal> {
   }
 
   Widget _buildDiscountSection() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Discount', style: widget.textTheme.bodySmall),
-          const SizedBox(height: 4),
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(width: 15,),
+        Text('Discount', style: widget.textTheme.bodySmall),
+        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
@@ -305,8 +306,8 @@ class _NewItemModalState extends State<NewItemModal> {
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

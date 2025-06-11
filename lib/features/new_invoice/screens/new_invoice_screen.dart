@@ -60,7 +60,6 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
         '${DateTime.now().day} ${DateFormat.MMMM().format(DateTime.now())} ${DateTime.now().year}';
     _invoiceNumberController.text = '001';
   }
-
   @override
   void dispose() {
     _issuedDateController.dispose();
@@ -183,14 +182,18 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       builder: (BuildContext context) {
-        return NewClientModal(
-          textTheme: Theme.of(context).textTheme,
-          billToController: _billToController,
-          emailController: _clientEmailController,
-          phoneController: _clientPhoneController,
-          addressController: _clientAddressController,
-          validateFields: _validateClientFields,
+        return FractionallySizedBox(
+          heightFactor: 1,
+          child: NewClientModal(
+            textTheme: Theme.of(context).textTheme,
+            billToController: _billToController,
+            emailController: _clientEmailController,
+            phoneController: _clientPhoneController,
+            addressController: _clientAddressController,
+            validateFields: _validateClientFields,
+          ),
         );
       },
     );
@@ -202,7 +205,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (BuildContext context) {
-        return NewItemModal(textTheme: Theme.of(context).textTheme);
+        return FractionallySizedBox(heightFactor: 1, child: NewItemModal(textTheme: Theme.of(context).textTheme),);
       },
     );
   }

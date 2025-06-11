@@ -33,7 +33,7 @@ class NewClientModal extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           color: const Color.fromRGBO(243, 243, 243, 1),
         ),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
