@@ -6,8 +6,8 @@ class NewItemSaveEvent extends NewItemEvent {
   final String billTo;
   final String details;
   final bool saveToItemsCatalog;
-  final String unitPrice;
-  final String quantity;
+  final double unitPrice;
+  final double quantity;
   final String unitType;
   final bool discount;
   final String taxable;
@@ -25,3 +25,5 @@ class NewItemSaveEvent extends NewItemEvent {
     required this.currency,
   });
 }
+
+class NewItemFetchEvent extends NewItemEvent {}

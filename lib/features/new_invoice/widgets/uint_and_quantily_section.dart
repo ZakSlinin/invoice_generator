@@ -31,32 +31,15 @@ class UnitAndQuantitySection extends StatelessWidget {
             children: [
               Text('Unit Price', style: textTheme.bodySmall),
               const SizedBox(height: 4),
-              Row(
-                children: [
-                  InkWell(
-                    onTap: onCurrencyTap,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        '${DateTime.now().day} ${DateFormat.MMMM().format(DateTime.now())} ${DateTime.now().year}',
-                        style: textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              _buildPriceField(
+                context,
+                controller: issuedDateController,
+                hintText: '0.00',
               ),
             ],
           ),
         ),
+        const SizedBox(width: 12),
         Expanded(
           flex: 3,
           child: Column(
@@ -64,7 +47,7 @@ class UnitAndQuantitySection extends StatelessWidget {
             children: [
               Text('Quantity', style: textTheme.bodySmall),
               const SizedBox(height: 4),
-              _buildDateField(
+              _buildQuantityField(
                 context,
                 controller: dueDateController,
                 hintText: '-',
@@ -74,16 +57,13 @@ class UnitAndQuantitySection extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text('Unit Type', style: textTheme.bodySmall),
               const SizedBox(height: 4),
-              _buildInvoiceNumberField(
-                context,
-                controller: invoiceNumberController,
-              ),
+              _buildUnitTypeField(context, controller: invoiceNumberController),
             ],
           ),
         ),
@@ -91,7 +71,7 @@ class UnitAndQuantitySection extends StatelessWidget {
     );
   }
 
-  Widget _buildDateField(
+  Widget _buildPriceField(
     BuildContext context, {
     required TextEditingController controller,
     String? hintText,
@@ -116,7 +96,32 @@ class UnitAndQuantitySection extends StatelessWidget {
     );
   }
 
-  Widget _buildInvoiceNumberField(
+  Widget _buildQuantityField(
+    BuildContext context, {
+    required TextEditingController controller,
+    String? hintText,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          hintText: hintText,
+          border: InputBorder.none,
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
+        ),
+        style: Theme.of(context).textTheme.labelLarge,
+      ),
+    );
+  }
+
+  Widget _buildUnitTypeField(
     BuildContext context, {
     required TextEditingController controller,
   }) {

@@ -56,13 +56,16 @@ class _NewItemModalState extends State<NewItemModal> {
   }
 
   void _handleAddItem() {
+    final unitPrice = double.tryParse(_unitPriceController.text) ?? 0.0;
+    final quantity = double.tryParse(_quantityController.text) ?? 0.0;
+
     context.read<NewItemBloc>().add(
       NewItemSaveEvent(
         billTo: _billToController.text,
         details: _detailsController.text,
         saveToItemsCatalog: _saveToCatalog,
-        unitPrice: _unitPriceController.text,
-        quantity: _quantityController.text,
+        unitPrice: unitPrice,
+        quantity: quantity,
         unitType: _unitTypeController.text,
         discount: _discountController.text != '0',
         taxable: _isTaxable ? 'Yes' : 'No',
@@ -169,7 +172,10 @@ class _NewItemModalState extends State<NewItemModal> {
         ),
         TextButton(
           onPressed: _handleAddItem,
-          child: Text('Done', style: widget.textTheme.labelSmall),
+          child: Text(
+            'Done',
+            style: widget.textTheme.labelSmall?.copyWith(color: Colors.black),
+          ),
         ),
       ],
     );
@@ -270,7 +276,7 @@ class _NewItemModalState extends State<NewItemModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(width: 15,),
+        const SizedBox(width: 15),
         Text('Discount', style: widget.textTheme.bodySmall),
         const SizedBox(height: 4),
         Container(

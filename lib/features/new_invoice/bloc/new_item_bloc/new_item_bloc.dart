@@ -6,9 +6,11 @@ part 'new_item_state.dart';
 
 class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
   final NewItemRepositoryImpl _repository;
+  List<Map<String, dynamic>> _currentSessionItems = [];
 
   NewItemBloc(this._repository) : super(NewItemInitial()) {
     on<NewItemSaveEvent>(_onSave);
+    on<NewItemFetchEvent>(_onFetch);
   }
 
   Future<void> _onSave(
@@ -16,16 +18,6 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
     Emitter<NewItemState> emit,
   ) async {
     try {
-      print('Bill To: ${event.billTo}');
-      print('Details: ${event.details}');
-      print('Save to Catalog: ${event.saveToItemsCatalog}');
-      print('Unit Price: ${event.unitPrice}');
-      print('Quantity: ${event.quantity}');
-      print('Unit Type: ${event.unitType}');
-      print('Discount: ${event.discount}');
-      print('Taxable: ${event.taxable}');
-      print('Currency: ${event.currency}');
-
       await _repository.saveNewItemData(
         billTo: event.billTo,
         details: event.details,
@@ -38,9 +30,40 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         currency: event.currency,
       );
 
-      emit(NewItemSaveSuccess());
+      // Refresh the items list to include the new item
+      final items = await _repository.getAllItems();
+      final newItem = items.firstWhere(
+        (item) =>
+            item['details'] == event.details &&
+            item['unitPrice'] == event.unitPrice &&
+            item['quantity'] == event.quantity,
+        orElse: () => {},
+      );
+
+      if (newItem.isNotEmpty) {
+        _currentSessionItems.add(newItem);
+        emit(NewItemSaveSuccess(item: newItem));
+      }
+
+      emit(
+        NewItemLoaded(items: items, currentSessionItems: _currentSessionItems),
+      );
     } catch (e) {
       emit(NewItemSaveFailed(message: e.toString()));
+    }
+  }
+
+  Future<void> _onFetch(
+    NewItemFetchEvent event,
+    Emitter<NewItemState> emit,
+  ) async {
+    try {
+      final items = await _repository.getAllItems();
+      emit(
+        NewItemLoaded(items: items, currentSessionItems: _currentSessionItems),
+      );
+    } catch (e) {
+      emit(NewItemLoadFailed(message: e.toString()));
     }
   }
 }

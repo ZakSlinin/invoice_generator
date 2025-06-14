@@ -26,13 +26,10 @@ class CurrencyService {
     final prefs = await SharedPreferences.getInstance();
     final recent = prefs.getStringList(_recentCurrenciesKey) ?? [];
 
-    // Удаляем валюту из списка, если она там есть
     recent.remove(currencyCode);
 
-    // Добавляем в начало списка
     recent.insert(0, currencyCode);
 
-    // Ограничиваем количество недавних валют
     if (recent.length > _maxRecentCurrencies) {
       recent.removeLast();
     }

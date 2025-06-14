@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:invoice_generator/features/dashboard/screens/dashboard_screen.dart';
 import 'package:invoice_generator/features/new_invoice/screens/new_invoice_screen.dart';
 import 'package:invoice_generator/features/onboarding/screens/add_logo_screen.dart';
@@ -8,6 +9,7 @@ import 'package:invoice_generator/features/onboarding/screens/control_invoices_s
 import 'package:invoice_generator/features/onboarding/screens/simple_screen.dart';
 import 'package:invoice_generator/features/onboarding/screens/your_invoices_safe_screen.dart';
 import 'package:invoice_generator/features/your_items/screens/your_items_screen.dart';
+import 'package:invoice_generator/features/preview_invoice/screens/preview_invoice_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -24,5 +26,6 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: AddLogoRoute.page, path: '/add-logo'),
     AutoRoute(page: DashboardRoute.page, path: '/dashboard'),
     AutoRoute(page: NewInvoiceRoute.page, path: '/new-invoice'),
+    AutoRoute(page: PreviewInvoiceRoute.page, path: '/preview-invoice'),
   ];
 }

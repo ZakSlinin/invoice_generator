@@ -9,8 +9,8 @@ class NewItemRepositoryImpl implements NewItemRepository {
     required String billTo,
     required String details,
     required bool saveToItemsCatalog,
-    required String unitPrice,
-    required String quantity,
+    required double unitPrice,
+    required double quantity,
     required String unitType,
     required bool discount,
     required String taxable,
@@ -25,8 +25,8 @@ class NewItemRepositoryImpl implements NewItemRepository {
     await prefs.setString('item_${itemId}_billTo', billTo);
     await prefs.setString('item_${itemId}_details', details);
     await prefs.setBool('item_${itemId}_saveToCatalog', saveToItemsCatalog);
-    await prefs.setString('item_${itemId}_unitPrice', unitPrice);
-    await prefs.setString('item_${itemId}_quantity', quantity);
+    await prefs.setDouble('item_${itemId}_unitPrice', unitPrice);
+    await prefs.setDouble('item_${itemId}_quantity', quantity);
     await prefs.setString('item_${itemId}_unitType', unitType);
     await prefs.setBool('item_${itemId}_discount', discount);
     await prefs.setString('item_${itemId}_taxable', taxable);
@@ -41,13 +41,29 @@ class NewItemRepositoryImpl implements NewItemRepository {
     final itemsList = prefs.getStringList(_itemsKey) ?? [];
 
     return itemsList.map((itemId) {
+      final unitPriceDynamic = prefs.get('item_${itemId}_unitPrice');
+      double unitPrice = 0.0;
+      if (unitPriceDynamic is double) {
+        unitPrice = unitPriceDynamic;
+      } else if (unitPriceDynamic is String) {
+        unitPrice = double.tryParse(unitPriceDynamic) ?? 0.0;
+      }
+
+      final quantityDynamic = prefs.get('item_${itemId}_quantity');
+      double quantity = 0.0;
+      if (quantityDynamic is double) {
+        quantity = quantityDynamic;
+      } else if (quantityDynamic is String) {
+        quantity = double.tryParse(quantityDynamic) ?? 0.0;
+      }
+
       return {
         'id': itemId,
         'billTo': prefs.getString('item_${itemId}_billTo'),
         'details': prefs.getString('item_${itemId}_details'),
         'saveToCatalog': prefs.getBool('item_${itemId}_saveToCatalog'),
-        'unitPrice': prefs.getString('item_${itemId}_unitPrice'),
-        'quantity': prefs.getString('item_${itemId}_quantity'),
+        'unitPrice': unitPrice,
+        'quantity': quantity,
         'unitType': prefs.getString('item_${itemId}_unitType'),
         'discount': prefs.getBool('item_${itemId}_discount'),
         'taxable': prefs.getString('item_${itemId}_taxable'),
@@ -59,13 +75,29 @@ class NewItemRepositoryImpl implements NewItemRepository {
   Future<Map<String, dynamic>> getItemById(String itemId) async {
     final prefs = await SharedPreferences.getInstance();
 
+    final unitPriceDynamic = prefs.get('item_${itemId}_unitPrice');
+    double unitPrice = 0.0;
+    if (unitPriceDynamic is double) {
+      unitPrice = unitPriceDynamic;
+    } else if (unitPriceDynamic is String) {
+      unitPrice = double.tryParse(unitPriceDynamic) ?? 0.0;
+    }
+
+    final quantityDynamic = prefs.get('item_${itemId}_quantity');
+    double quantity = 0.0;
+    if (quantityDynamic is double) {
+      quantity = quantityDynamic;
+    } else if (quantityDynamic is String) {
+      quantity = double.tryParse(quantityDynamic) ?? 0.0;
+    }
+
     return {
       'id': itemId,
       'billTo': prefs.getString('item_${itemId}_billTo'),
       'details': prefs.getString('item_${itemId}_details'),
       'saveToCatalog': prefs.getBool('item_${itemId}_saveToCatalog'),
-      'unitPrice': prefs.getString('item_${itemId}_unitPrice'),
-      'quantity': prefs.getString('item_${itemId}_quantity'),
+      'unitPrice': unitPrice,
+      'quantity': quantity,
       'unitType': prefs.getString('item_${itemId}_unitType'),
       'discount': prefs.getBool('item_${itemId}_discount'),
       'taxable': prefs.getString('item_${itemId}_taxable'),

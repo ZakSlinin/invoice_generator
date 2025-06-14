@@ -6,6 +6,7 @@ class SummarySection extends StatelessWidget {
   final String total;
   final VoidCallback onOpenCurrency;
   final String selectedCurrency;
+  final List<Map<String, dynamic>> items;
 
   const SummarySection({
     super.key,
@@ -13,6 +14,7 @@ class SummarySection extends StatelessWidget {
     required this.total,
     required this.onOpenCurrency,
     required this.selectedCurrency,
+    required this.items,
   });
 
   @override

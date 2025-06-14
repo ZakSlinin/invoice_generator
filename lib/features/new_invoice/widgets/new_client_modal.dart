@@ -4,23 +4,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invoice_generator/features/new_invoice/bloc/new_client_bloc/new_client_bloc.dart';
 
-class NewClientModal extends StatelessWidget {
+class NewClientModal extends StatefulWidget {
   final TextTheme textTheme;
-  final TextEditingController billToController;
-  final TextEditingController emailController;
-  final TextEditingController phoneController;
-  final TextEditingController addressController;
-  final bool Function() validateFields;
+  final TextEditingController? billToController;
+  final TextEditingController? emailController;
+  final TextEditingController? phoneController;
+  final TextEditingController? addressController;
+  final Function()? validateFields;
 
   const NewClientModal({
     super.key,
     required this.textTheme,
-    required this.billToController,
-    required this.emailController,
-    required this.phoneController,
-    required this.addressController,
-    required this.validateFields,
+    this.billToController,
+    this.emailController,
+    this.phoneController,
+    this.addressController,
+    this.validateFields,
   });
+
+  @override
+  State<NewClientModal> createState() => _NewClientModalState();
+}
+
+class _NewClientModalState extends State<NewClientModal> {
+  late final TextEditingController _billToController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _addressController;
+
+  @override
+  void initState() {
+    super.initState();
+    _billToController = widget.billToController ?? TextEditingController();
+    _emailController = widget.emailController ?? TextEditingController();
+    _phoneController = widget.phoneController ?? TextEditingController();
+    _addressController = widget.addressController ?? TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    if (widget.billToController == null) _billToController.dispose();
+    if (widget.emailController == null) _emailController.dispose();
+    if (widget.phoneController == null) _phoneController.dispose();
+    if (widget.addressController == null) _addressController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +67,7 @@ class NewClientModal extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildModalHeader(context),
-            Text('New Client', style: textTheme.bodyLarge),
+            Text('New Client', style: widget.textTheme.bodyLarge),
             const SizedBox(height: 24),
             _buildBillToField(),
             const SizedBox(height: 24),
@@ -66,26 +94,29 @@ class NewClientModal extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           child: Text(
             'Cancel',
-            style: textTheme.labelSmall?.copyWith(
+            style: widget.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.normal,
             ),
           ),
         ),
         TextButton(
           onPressed: () {
-            if (validateFields()) {
+            if (widget.validateFields?.call() ?? true) {
               context.read<NewClientBloc>().add(
                 NewClientSaveEvent(
-                  email: emailController.text,
-                  phone: phoneController.text,
-                  address: addressController.text,
-                  billTo: billToController.text,
+                  email: _emailController.text,
+                  phone: _phoneController.text,
+                  address: _addressController.text,
+                  billTo: _billToController.text,
                 ),
               );
               Navigator.pop(context);
             }
           },
-          child: Text('Done', style: textTheme.labelSmall),
+          child: Text(
+            'Done',
+            style: widget.textTheme.labelSmall?.copyWith(color: Colors.black),
+          ),
         ),
       ],
     );
@@ -102,7 +133,7 @@ class NewClientModal extends StatelessWidget {
                 fillColor: Colors.white,
                 filled: true,
                 hintText: 'Bill To',
-                hintStyle: textTheme.bodyMedium?.copyWith(
+                hintStyle: widget.textTheme.bodyMedium?.copyWith(
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
@@ -114,12 +145,12 @@ class NewClientModal extends StatelessWidget {
                 isDense: true,
                 contentPadding: const EdgeInsets.all(8),
               ),
-              style: textTheme.bodyMedium?.copyWith(
+              style: widget.textTheme.bodyMedium?.copyWith(
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
                 fontSize: 12,
               ),
-              controller: billToController,
+              controller: _billToController,
             ),
           ),
         ),
@@ -131,7 +162,7 @@ class NewClientModal extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Contacts', style: textTheme.bodySmall),
+        Text('Contacts', style: widget.textTheme.bodySmall),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -141,11 +172,11 @@ class NewClientModal extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildContactRow('E-mail', 'Optional', emailController),
+              _buildContactRow('E-mail', 'Optional', _emailController),
               const Divider(),
-              _buildContactRow('Phone', 'Optional', phoneController),
+              _buildContactRow('Phone', 'Optional', _phoneController),
               const Divider(),
-              _buildContactRow('Address', '', addressController),
+              _buildContactRow('Address', '', _addressController),
             ],
           ),
         ),
@@ -161,7 +192,10 @@ class NewClientModal extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(width: 80, child: Text(label, style: textTheme.bodyMedium)),
+        SizedBox(
+          width: 80,
+          child: Text(label, style: widget.textTheme.bodyMedium),
+        ),
         const SizedBox(width: 16),
         Expanded(
           child: TextField(
@@ -175,7 +209,7 @@ class NewClientModal extends StatelessWidget {
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(vertical: 20),
             ),
-            style: textTheme.bodyMedium?.copyWith(
+            style: widget.textTheme.bodyMedium?.copyWith(
               color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
