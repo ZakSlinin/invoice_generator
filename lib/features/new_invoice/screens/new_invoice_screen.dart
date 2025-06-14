@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:invoice_generator/features/new_invoice/bloc/new_client_bloc/new_client_bloc.dart';
 import 'package:invoice_generator/features/new_invoice/bloc/new_item_bloc/new_item_bloc.dart';
@@ -19,6 +20,10 @@ import 'package:invoice_generator/features/new_invoice/widgets/new_client_modal.
 import 'package:invoice_generator/features/new_invoice/widgets/new_item_modal.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/photos_section.dart';
 import 'package:invoice_generator/features/new_invoice/widgets/summary_section.dart';
+import 'package:invoice_generator/features/shared/data/repositories/abstract_invoice_repository.dart';
+import 'package:invoice_generator/features/shared/models/invoice.dart';
+
+import '../../../core/router/app_router.dart';
 
 @RoutePage()
 class NewInvoiceScreen extends StatefulWidget {
@@ -205,7 +210,7 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
                         ),
                         CreateInvoiceButton(
                           textTheme: textTheme,
-                          onCreateInvoice: () {
+                          onCreateInvoice: () async {
                             final String issuedDate =
                                 _issuedDateController.text;
                             final String invoiceNumber =
@@ -220,16 +225,28 @@ class _NewInvoiceScreenState extends State<NewInvoiceScreen> {
                                 ? itemState.currentSessionItems
                                 : [];
 
-                            // context.router.push(
-                            //   PreviewInvoiceRoute(
-                            //     issuedDate: issuedDate,
-                            //     invoiceNumber: invoiceNumber,
-                            //     client: currentClient,
-                            //     items: currentItems,
-                            //     totalAmount: _totalAmount,
-                            //     selectedCurrency: _selectedCurrency,
-                            //   ),
-                            // );
+                            final invoice = Invoice(
+                              issuedDate: issuedDate,
+                              invoiceNumber: invoiceNumber,
+                              client: currentClient,
+                              items: currentItems,
+                              totalAmount: _totalAmount,
+                              selectedCurrency: _selectedCurrency,
+                            );
+
+                            await GetIt.I<AbstractInvoiceRepository>()
+                                .saveInvoice(invoice);
+
+                            context.router.push(
+                              PreviewInvoiceRoute(
+                                issuedDate: issuedDate,
+                                invoiceNumber: invoiceNumber,
+                                client: currentClient,
+                                items: currentItems,
+                                totalAmount: _totalAmount,
+                                selectedCurrency: _selectedCurrency,
+                              ),
+                            );
                           },
                         ),
                       ],

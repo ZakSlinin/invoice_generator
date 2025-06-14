@@ -3,8 +3,13 @@ import 'dart:math';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:invoice_generator/core/router/app_router.dart';
+import 'package:invoice_generator/features/dashboard/bloc/invoice_bloc/invoice_bloc.dart';
+import 'package:invoice_generator/features/shared/models/invoice.dart';
 
 @RoutePage()
 class DashboardScreen extends StatefulWidget {
@@ -16,6 +21,12 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   String _selectedTab = 'All';
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<InvoiceBloc>().add(FetchInvoicesEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   horizontal: 16,
                 ),
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(246, 246, 246, 1),
+                  color: const Color.fromRGBO(246, 246, 246, 1),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
@@ -162,31 +173,107 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Invoices',
-                    textAlign: TextAlign.center,
-                    style: textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Start by creating an invoice. Look\nProfessional to your clients',
-                    textAlign: TextAlign.center,
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 16),
+              Expanded(
+                child: BlocBuilder<InvoiceBloc, InvoiceState>(
+                  builder: (context, state) {
+                    if (state is InvoicesLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is InvoicesLoaded) {
+                      if (state.invoices.isEmpty) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Invoices',
+                              textAlign: TextAlign.center,
+                              style: textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Start by creating an invoice. Look\nProfessional to your clients',
+                              textAlign: TextAlign.center,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return ListView.builder(
+                          itemCount: state.invoices.length,
+                          itemBuilder: (context, index) {
+                            final invoice = state.invoices[index];
+                            final clientName =
+                                invoice.client?['billTo'] ?? 'N/A';
+                            final formattedTotal =
+                                '${invoice.totalAmount.toStringAsFixed(2)} ${invoice.selectedCurrency}';
+
+                            return Card(
+                              margin: const EdgeInsets.symmetric(vertical: 8.0),
+                              elevation: 1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  'Invoice #${invoice.invoiceNumber}',
+                                  style: textTheme.bodyLarge,
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'To: $clientName',
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        color: Colors.grey[700],
+                                      ),
+                                    ),
+                                    Text(
+                                      'Issued: ${invoice.issuedDate}',
+                                      style: textTheme.bodySmall?.copyWith(
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                trailing: Text(
+                                  formattedTotal,
+                                  style: textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                onTap: () {
+                                  context.router.push(
+                                    PreviewInvoiceRoute(
+                                      issuedDate: invoice.issuedDate,
+                                      invoiceNumber: invoice.invoiceNumber,
+                                      client: invoice.client,
+                                      items: invoice.items,
+                                      totalAmount: invoice.totalAmount,
+                                      selectedCurrency:
+                                          invoice.selectedCurrency,
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    } else if (state is InvoicesError) {
+                      return Center(child: Text('Error: ${state.message}'));
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
               ),
               SizedBox(
                 height: max(
-                  MediaQuery.of(context).size.height * 0.2,
-                  min(MediaQuery.of(context).size.height * 0.33, 300),
+                  MediaQuery.of(context).size.height * 0.05,
+                  min(MediaQuery.of(context).size.height * 0.1, 100),
                 ),
               ),
               Container(
